@@ -126,7 +126,6 @@ def dijkstra(aGraph, start):
             else:
                 print 'not updated : current = %s next = %s new_dist = %s' \
                         %(current.get_id(), next.get_id(), next.get_distance())
-
         # Rebuild heap
         # 1. Pop every item
         while len(unvisited_queue):
@@ -189,4 +188,4 @@ if __name__ == '__main__':
     shortest_route = hospitalEmergency.getShortestRoute()
     min_distance = str(hospitalEmergency.getMinimumTravelDistance())
     time_taken =hospitalEmergency.getTimeTakenToReachAirport()
-    output.write(STRING_CONCAT % (hospital_node.strip(),airport_node.strip(),shortest_route,min_distance,time_taken)) 
+    output.write(STRING_CONCAT % (hospital_node.strip(),airport_node.strip(),path[::-1],min_distance,time_taken)) 
