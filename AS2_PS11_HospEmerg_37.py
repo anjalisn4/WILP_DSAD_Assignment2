@@ -137,22 +137,62 @@ def dijkstra(aGraph, start):
 class HospitalEmergency:
 
     # This function is called to get the shortest route
-    def getShortestRoute(self):
-        return '[ a, b, c, j, k, m, o]'  
-
-    # This function is called to get the minimum travel distance
-    def getMinimumTravelDistance(self):
-        return 23 
+    def get_shortest_path(self,g):
+        print ('Graph data:')
+        for v in g:
+            for w in v.get_connections():
+                vid = v.get_id()
+                wid = w.get_id()
+                print ('( %s , %s, %3d)'  % ( vid, wid, v.get_weight(w)))    
+        dijkstra(g, g.get_vertex(str(hospital_node.strip()))) 
+        target = g.get_vertex(str(airport_node.strip()))
+        path = [target.get_id()]
+        shortest(target, path)
+        shortest_path=path[::-1];
+        print ('The shortest path : %s' %(path[::-1]))
+        return shortest_path
 
     # This function is called to get the time taken for the ambulance to reach the airport
-    def getTimeTakenToReachAirport(self):
-        return "17:15"         
+    def get_time_taken_to_reach_airport(self, distance):
+        return 60*(float(distance)/80)
+
+    # This is a helper function which returns the sequence of shortest path
+    # if ['a','b','c'] is the shortest path, it returns [['a','b'],['b','c']]
+    def get_path_sequence(self, shortest_path):
+        shortest_path_sequence= []    
+        for i in range(0, len(shortest_path)):
+            current_node = shortest_path[i-1]
+            next_node = shortest_path[i]   
+            shortest_path_sequence.append([current_node,next_node])           
+        shortest_path_sequence.pop(0)   
+        return shortest_path_sequence
+
+    # This is a helper function which returns the weight between 2 nodes
+    def get_distance_between_nodes(self,from_node, to_node):
+        distance=None;
+        for v in g:
+            for w in v.get_connections():
+                vid = v.get_id()
+                wid = w.get_id()
+                if(vid == from_node and wid == to_node):
+                    distance= v.get_weight(w)
+                    break  
+        return distance  
+
+    # This function returns the shortest distance in kms, which the ambulance has to travel from hospital to airport.
+    def get_shortest_distance(self, shortest_path):
+        shortest_distance=0
+        shortest_path_sequence= self.get_path_sequence(shortest_path)
+        for i in shortest_path_sequence:
+            distance_between_nodes =self.get_distance_between_nodes(i[0],i[1])
+            shortest_distance += distance_between_nodes
+        return shortest_distance
 
 if __name__ == '__main__':
     hospitalEmergency = None
     inputs = open('inputPS11.txt', 'r')
     output = open('outputPS11.txt', 'w')
-    STRING_CONCAT = "Shortest route from the hospital '%s' to reach the airport '%s' is %s and it has minimum travel distance %skm it will take %s minutes for the ambulance to reach the airport"
+    STRING_CONCAT = "Shortest route from the hospital '%s' to reach the airport '%s' is %s\nand it has minimum travel distance %skm\nit will take %s minutes for the ambulance to reach the airport."
     vertices = []
     edges =[]
     for i in inputs:
@@ -164,6 +204,8 @@ if __name__ == '__main__':
             edge = i.strip('\n').split('/')
             if edge[0].strip() not in vertices:
                 vertices.append(edge[0].strip())
+            if edge[1].strip() not in vertices:
+                vertices.append(edge[1].strip())
             edges.append(edge)
     g = Graph() 
     for i in vertices:
@@ -171,21 +213,8 @@ if __name__ == '__main__':
     for j in edges:
         g.add_edge(j[0].strip(),j[1].strip(),int(j[2].strip()))      
 
-    print 'Graph data:'
-    for v in g:
-        for w in v.get_connections():
-            vid = v.get_id()
-            wid = w.get_id()
-            print '( %s , %s, %3d)'  % ( vid, wid, v.get_weight(w))    
-    
-    dijkstra(g, g.get_vertex(str(hospital_node.strip()))) 
-    target = g.get_vertex(str(airport_node.strip()))
-    path = [target.get_id()]
-    shortest(target, path)
-    print 'The shortest path : %s' %(path[::-1])        
-        
     hospitalEmergency = HospitalEmergency()
-    shortest_route = hospitalEmergency.getShortestRoute()
-    min_distance = str(hospitalEmergency.getMinimumTravelDistance())
-    time_taken =hospitalEmergency.getTimeTakenToReachAirport()
-    output.write(STRING_CONCAT % (hospital_node.strip(),airport_node.strip(),path[::-1],min_distance,time_taken)) 
+    shortest_path = hospitalEmergency.get_shortest_path(g)
+    min_distance = str(hospitalEmergency.get_shortest_distance(shortest_path))
+    time_taken =hospitalEmergency.get_time_taken_to_reach_airport(min_distance)
+    output.write(STRING_CONCAT % (hospital_node.strip(),airport_node.strip(),shortest_path,min_distance,time_taken)) 

@@ -1,1 +1,3 @@
-Shortest route from the hospital 'a' to reach the airport 'e' is ['a', 'c', 'f', 'e'] and it has minimum travel distance 23km it will take 17:15 minutes for the ambulance to reach the airport
+Shortest route from the hospital 'H' to reach the airport 'S' is ['H', 'B', 'D', 'F', 'S']
+and it has minimum travel distance 90km
+it will take 67.5 minutes for the ambulance to reach the airport.

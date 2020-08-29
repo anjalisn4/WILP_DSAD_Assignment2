@@ -10,3 +10,5 @@ map with roads and junctions / signals between the hospital and the airport. (th
 kilometres of the road is indicated by the weightage of each connecting line and the junction
 / signal is indicated by the nodes). Now they need your help in finding the best possible route
 with the shortest distance that the ambulance should use. 
+
+https://brilliant.org/wiki/dijkstras-short-path-finder/

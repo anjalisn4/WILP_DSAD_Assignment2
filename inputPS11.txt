@@ -1,12 +1,15 @@
-a / b / 7
-a / c / 9
-a / f / 14
-b / c / 10
-b / d / 15
-c / d / 11
-c / f / 2
-d / e / 6
-e / f / 9
+H / C / 50
+H / B / 20
+H / A / 30
+A / D / 30
+B / D / 10
+B / E / 60
+D / F / 40
+C / E / 20
+E / F / 10
+E / S / 40
+F / S / 20
 
-Hospital Node: a
-Airport Node: e
+
+Hospital Node: H
+Airport Node: S
