@@ -39,49 +39,45 @@ class Graph():
                 break
         return weight    
 
-
-def dijsktra(graph, initial, end):
+    # This function implements Dijkstra algorithm , is called to get the shortest route
+def _dijkstra(graph, initial, end):
     # shortest paths is a dict of nodes
     # whose value is a tuple of (previous node, weight)
-    shortest_paths = {initial: (None, 0)}
-    current_node = initial
-    visited = set()
+    short_paths = {initial: (None, 0)}
+    current = initial
+    _visited = set()
     
-    while current_node != end:
-        visited.add(current_node)
-        destinations = graph.edges[current_node]
-        weight_to_current_node = shortest_paths[current_node][1]
+    while current != end:
+        _visited.add(current)
+        destinations = graph.edges[current]
+        weight_to_current = short_paths[current][1]
 
         for next_node in destinations:
-            weight = graph.weights[(current_node, next_node)] + weight_to_current_node
-            if next_node not in shortest_paths:
-                shortest_paths[next_node] = (current_node, weight)
+            weight = graph.weights[(current, next_node)] + weight_to_current
+            if next_node not in short_paths:
+                short_paths[next_node] = (current, weight)
             else:
-                current_shortest_weight = shortest_paths[next_node][1]
+                current_shortest_weight = short_paths[next_node][1]
                 if current_shortest_weight > weight:
-                    shortest_paths[next_node] = (current_node, weight)
+                    short_paths[next_node] = (current, weight)
         
-        next_destinations = {node: shortest_paths[node] for node in shortest_paths if node not in visited}
+        next_destinations = {node: short_paths[node] for node in short_paths if node not in _visited}
         if not next_destinations:
             return "Route Not Possible"
         # next node is the destination with the lowest weight
-        current_node = min(next_destinations, key=lambda k: next_destinations[k][1])
+        current = min(next_destinations, key=lambda k: next_destinations[k][1])
     
     # Work back through destinations in shortest path
     path = []
-    while current_node is not None:
-        path.append(current_node)
-        next_node = shortest_paths[current_node][0]
-        current_node = next_node
+    while current is not None:
+        path.append(current)
+        next_node = short_paths[current][0]
+        current = next_node
     # Reverse path
     path = path[::-1]
     return path
 
 class HospitalEmergency:
-
-    # This function is called to get the shortest route
-    def get_shortest_path(self,g,from_node,to_node):
-        return dijsktra(g, from_node,to_node)
 
     # This function is called to get the time taken for the ambulance to reach the airport
     def get_time_taken_to_reach_airport(self, distance):
@@ -92,9 +88,9 @@ class HospitalEmergency:
     def get_path_sequence(self, shortest_path):
         shortest_path_sequence= []    
         for i in range(0, len(shortest_path)):
-            current_node = shortest_path[i-1]
+            current = shortest_path[i-1]
             next_node = shortest_path[i]   
-            shortest_path_sequence.append([current_node,next_node])           
+            shortest_path_sequence.append([current,next_node])           
         shortest_path_sequence.pop(0)   
         return shortest_path_sequence
 
@@ -114,10 +110,11 @@ if __name__ == '__main__':
     STRING_CONCAT = "Shortest route from the hospital '%s' to reach the airport '%s' is %s\nand it has minimum travel distance %skm\nit will take %s minutes for the ambulance to reach the airport."
     edges =[]
     for i in inputs:
-        if 'Hospital Node' in i:
-            itype, hospital_node = i.split(':')
-        if 'Airport Node' in i:
-            itype, airport_node = i.split(':')
+        i= i.lower()
+        if ('hospital node' in i):
+            hospital_node=i.split(':')[1].strip()
+        if ('airport node' in i):
+            airport_node=i.split(':')[1].strip()
         if '/' in i:
             edge = i.strip('\n').split('/')
             if(int(edge[2].strip())<0):
@@ -127,13 +124,13 @@ if __name__ == '__main__':
     g = Graph() 
     for edge in edges:
         g.add_edge(*edge)
-
+    
     hospitalEmergency = HospitalEmergency()
-    shortest_path = hospitalEmergency.get_shortest_path(g, str(hospital_node.strip()),str(airport_node.strip()))
+    shortest_path = _dijkstra(g, str(hospital_node.strip()),str(airport_node.strip()))
     if(shortest_path == 'Route Not Possible'):
         raise ValueError("Route is not possible. Please provide a valid input")
     else:     
         min_distance = hospitalEmergency.get_shortest_distance(shortest_path)
         time_taken = hospitalEmergency.get_time_taken_to_reach_airport(min_distance)
-        output.write(STRING_CONCAT % (hospital_node.strip(),airport_node.strip(),shortest_path,min_distance,'{:02d}:{:02d}'.format(*divmod(int(time_taken), 60))))     
+        output.write(STRING_CONCAT % (hospital_node.strip(),airport_node.strip(),shortest_path,min_distance,str(time_taken).replace('.',':')))     
  

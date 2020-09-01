@@ -1,15 +1,35 @@
-H / C / 50
-H / B / 20
-H / A / 30
-A / D / 30
-B / D / 10
-B / E / 60
-D / F / 40
-C / E / 20
-E / F / 10
-E / S / 40
-F / S / 20
-
-
-Hospital Node: H
-Airport Node: S
+A / b / 5
+b / c / 4
+a / D / 7
+b / e / 3
+e / I / 4
+b / a / 5
+c / i / 6
+c / j / 6
+d / g / 8
+d / f / 2
+E / b / 3
+f / i / 5
+f / d / 2
+g / d / 8
+d / g / 8
+g / h / 6
+i / c / 6
+i / k / 7
+i / l / 4
+j / k / 2
+k / i / 7
+k / m / 2
+k / o / 8
+l / i / 4
+l / n / 3
+l / h / 2
+m / k / 2
+m / o / 4
+n / l / 3
+n / o / 6
+o / m / 4
+o / k / 8
+o / n / 6
+Hospital Node: A
+Airport Node: O
