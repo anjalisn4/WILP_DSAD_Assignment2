@@ -120,6 +120,8 @@ if __name__ == '__main__':
             itype, airport_node = i.split(':')
         if '/' in i:
             edge = i.strip('\n').split('/')
+            if(int(edge[2].strip())<0):
+                raise ValueError('Invalid weight provided.')
             input_edge= (edge[0].strip(),edge[1].strip(),int(edge[2].strip()))
             edges.append(input_edge)
     g = Graph() 
@@ -128,7 +130,10 @@ if __name__ == '__main__':
 
     hospitalEmergency = HospitalEmergency()
     shortest_path = hospitalEmergency.get_shortest_path(g, str(hospital_node.strip()),str(airport_node.strip()))
-    min_distance = hospitalEmergency.get_shortest_distance(shortest_path)
-    time_taken =hospitalEmergency.get_time_taken_to_reach_airport(min_distance)
-    output.write(STRING_CONCAT % (hospital_node.strip(),airport_node.strip(),shortest_path,min_distance,time_taken))     
+    if(shortest_path == 'Route Not Possible'):
+        raise ValueError("Route is not possible. Please provide a valid input")
+    else:     
+        min_distance = hospitalEmergency.get_shortest_distance(shortest_path)
+        time_taken = hospitalEmergency.get_time_taken_to_reach_airport(min_distance)
+        output.write(STRING_CONCAT % (hospital_node.strip(),airport_node.strip(),shortest_path,min_distance,'{:02d}:{:02d}'.format(*divmod(int(time_taken), 60))))     
  
