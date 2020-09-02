@@ -81,7 +81,14 @@ class HospitalEmergency:
 
     # This function is called to get the time taken for the ambulance to reach the airport
     def get_time_taken_to_reach_airport(self, distance):
-        return 60*(float(distance)/80)
+        time_in_seconds= 60*60*(float(distance)/80);
+        minutes = time_in_seconds // 60
+        hours = minutes // 60
+        if hours == 0.0:
+            return ("%02d:%02d" % (minutes, time_in_seconds % 60))
+        else:
+            return ("%02d:%02d:%02d" % (hours, minutes % 60, time_in_seconds % 60))
+
 
     # This is a helper function which returns the sequence of shortest path
     # if ['a','b','c'] is the shortest path, it returns [['a','b'],['b','c']]
@@ -118,7 +125,7 @@ if __name__ == '__main__':
         if '/' in i:
             edge = i.strip('\n').split('/')
             if(int(edge[2].strip())<0):
-                raise ValueError('Invalid weight provided.')
+                raise ValueError('Invalid weight provided. Negative weight is not allowed in the current design.')
             input_edge= (edge[0].strip(),edge[1].strip(),int(edge[2].strip()))
             edges.append(input_edge)
     g = Graph() 
@@ -132,5 +139,5 @@ if __name__ == '__main__':
     else:     
         min_distance = hospitalEmergency.get_shortest_distance(shortest_path)
         time_taken = hospitalEmergency.get_time_taken_to_reach_airport(min_distance)
-        output.write(STRING_CONCAT % (hospital_node.strip(),airport_node.strip(),shortest_path,min_distance,str(time_taken).replace('.',':')))     
+        output.write(STRING_CONCAT % (hospital_node.strip(),airport_node.strip(),shortest_path,min_distance,time_taken))    
  
