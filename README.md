@@ -11,4 +11,8 @@ kilometres of the road is indicated by the weightage of each connecting line and
 / signal is indicated by the nodes). Now they need your help in finding the best possible route
 with the shortest distance that the ambulance should use. 
 
-https://brilliant.org/wiki/dijkstras-short-path-finder/
+## To run the application execute the below code in terminal:
+
+```
+py .\AS2_PS11_HospEmerg_037.py
+```
